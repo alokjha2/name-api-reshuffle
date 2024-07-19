@@ -8,3 +8,5 @@ git remote add origin https://github.com/alokjha2/name-api-reshuffle.git
 git push -u origin main
 
 pip install -r requirements.txt
+
+myenv\Scripts\activate
