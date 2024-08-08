@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import pandas as pd
+from youtube_live import get_live_streams_from_channels
 
 app = Flask(__name__)
 CORS(app)
@@ -54,5 +55,21 @@ def check_name():
     exists = is_name_in_list(name, processed_name_list_lower)
     return jsonify({'name': name, 'exists': exists})
 
+# Predefined list of YouTube channel URLs
+channels = [
+    "https://www.youtube.com/@WingsGaneshBhakti",
+    "https://www.youtube.com/@SomnathTempleOfficialChannel",
+    "https://www.youtube.com/@ungalsaimahi",
+]
+
+@app.route('/get_live_streams', methods=['GET'])
+def get_live_streams():
+    live_streams = get_live_streams_from_channels(channels)
+    
+    if live_streams:
+        return jsonify(live_streams)
+    else:
+        return jsonify({'message': 'No channels are live right now.'})
+
 if __name__ == '__main__':
-     app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
