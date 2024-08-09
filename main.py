@@ -1,3 +1,4 @@
+import random
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import pandas as pd
@@ -64,7 +65,11 @@ channels = [
 
 @app.route('/get_live_streams', methods=['GET'])
 def get_live_streams():
-    live_streams = get_live_streams_from_channels(channels)
+    random_channel = random.choice(channels)
+    
+    # Fetch live streams from the selected channel
+    live_streams = get_live_streams_from_channels([random_channel])
+    # live_streams = get_live_streams_from_channels(channels)
     
     if live_streams:
         return jsonify(live_streams)
