@@ -1,11 +1,20 @@
-import random
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import pandas as pd
 from youtube_live import get_live_streams_from_channels
 
+import random
+import requests
+import re
+from youtube_live import get_live_streams_from_channels
+import logging
+
 app = Flask(__name__)
 CORS(app)
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+logger = logging.getLogger(__name__)
 
 # Load the CSV files
 male_names = pd.read_csv('Indian-Male-Names.csv')
@@ -70,11 +79,9 @@ def get_live_streams():
     # Fetch live streams from the selected channel
     live_streams = get_live_streams_from_channels([random_channel])
     # live_streams = get_live_streams_from_channels(channels)
+    logger.info(f"live streams: {live_streams}")
     
-    if live_streams:
-        return jsonify(live_streams)
-    else:
-        return jsonify({'message': 'No channels are live right now.'})
+    return jsonify(live_streams)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
